@@ -51,7 +51,14 @@ ui <- fluidPage(
              br(),
              br(),
              br(),
-             dataTableOutput(outputId = "dtTable")
+             dataTableOutput(outputId = "dtTable"),
+             br(),
+             br(),
+             downloadButton("downloadData", "Download"),
+             br(),
+             br(),
+             br(),
+             br()
     ),
     
     tabPanel("Population for each country", 
@@ -169,6 +176,15 @@ server <- function(input, output) {
   output$dtTable = DT::renderDataTable({
     DT::datatable(df, class = 'cell-border stripe')
   }) 
+  
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste("data-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      write.csv(df, file)
+    }
+  )
   
 }
 
