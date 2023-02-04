@@ -91,8 +91,9 @@ ui <- fluidPage(
                              choices = c("X1995", "X1996", "X1997", "X1998", "X1999", "X2000", "X2001", "X2002",
                                          "X2003", "X2004", "X2005", "X2006", "X2007", "X2008", "X2009", "X2010",
                                          "X2011", "X2012", "X2013"), 
-                             selected = "X2000")
-                 
+                             selected = "X2000"),
+                 sliderInput("c_count", "Top countries with highest population: ", min=2, max=10, value= 5,
+                             step=1, round=0)
                ),
                
                # Output: Show dumbbell plot --------------------------------------
@@ -136,7 +137,7 @@ server <- function(input, output) {
   
   population_country2 <- reactive({
     new_table <- df[order(df$X1995,decreasing=TRUE),]
-    head(new_table)
+    head(new_table, input$c_count)
   })
   
   
