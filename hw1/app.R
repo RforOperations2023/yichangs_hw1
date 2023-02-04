@@ -32,7 +32,14 @@ ui <- fluidPage(
                              choices = c("X1995", "X1996", "X1997", "X1998", "X1999", "X2000", "X2001", "X2002",
                                          "X2003", "X2004", "X2005", "X2006", "X2007", "X2008", "X2009", "X2010",
                                          "X2011", "X2012", "X2013"), 
-                             selected = "X2000")
+                             selected = "X2000"),
+                 
+                 # Select variable for color -----------------------------------
+                 selectInput(inputId = "z", 
+                             label = "Color:",
+                             choices = c("darkred", "darkgreen", "darkblue"),
+                             selected = "darkblue")
+                 
                  
                ),
                
@@ -50,7 +57,7 @@ server <- function(input, output) {
   
   # Create barplot object the plotOutput function is expecting --
   output$barchart <- renderPlot({
-    ggplot(data = df, aes_string(x = "country", y = input$y)) + geom_bar(stat = "identity") +
+    ggplot(data = df, aes_string(x = "country", y = input$y)) + geom_bar(stat = "identity", fill=input$z) +
       theme(axis.text.x=element_text(angle=90,hjust=1,vjust=0.5)) +
       labs(title=paste0("Population of ", input$y))
   })
