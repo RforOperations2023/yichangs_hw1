@@ -71,6 +71,35 @@ ui <- fluidPage(
                  plotOutput(outputId = "country_barchart")
                )
              )
+    ),
+    tabPanel("Popultion change",
+             # Sidebar layout with a input and output definitions --------------
+             sidebarLayout(
+               
+               # Inputs: Select variables to plot ------------------------------
+               sidebarPanel(
+                 
+                 # Select variable for sy ----------------------------------
+                 selectInput(inputId = "sy", 
+                             label = "Start Year:",
+                             choices = c("X1995", "X1996", "X1997", "X1998", "X1999", "X2000", "X2001", "X2002",
+                                         "X2003", "X2004", "X2005", "X2006", "X2007", "X2008", "X2009", "X2010",
+                                         "X2011", "X2012", "X2013"), 
+                             selected = "X1995"),
+                 selectInput(inputId = "ey", 
+                             label = "End Year:",
+                             choices = c("X1995", "X1996", "X1997", "X1998", "X1999", "X2000", "X2001", "X2002",
+                                         "X2003", "X2004", "X2005", "X2006", "X2007", "X2008", "X2009", "X2010",
+                                         "X2011", "X2012", "X2013"), 
+                             selected = "X2000")
+                 
+               ),
+               
+               # Output: Show dumbbell plot --------------------------------------
+               mainPanel(
+                 plotOutput(outputId = "dumbbell_chart")
+               )
+             )
     )
   )
 )
@@ -102,6 +131,34 @@ server <- function(input, output) {
       labs(subtitle=paste0("Population of ", input$c), 
            title= "Diverging Bars") + 
       coord_flip()
+  })
+  
+  
+  population_country2 <- reactive({
+    new_table <- df[order(df$X1995,decreasing=TRUE),]
+    head(new_table)
+  })
+  
+  
+  output$dumbbell_chart <- renderPlot({
+    ggplot(population_country2(), aes_string(x=input$sy, xend=input$ey, y="country")) + 
+      geom_dumbbell(size=3, color="#e3e2e1", 
+                    colour_x = "#5b8124", colour_xend = "#bad744",
+                    dot_guide=TRUE, dot_guide_size=0.25) + 
+      labs(x=NULL, 
+           y=NULL, 
+           title="Dumbbell Chart", 
+           subtitle=paste0("Population Change: ", input$sy, " vs ", input$ey), 
+           caption="Source: https://github.com/hrbrmstr/ggalt") +
+      theme(plot.title = element_text(hjust=0.5, face="bold"),
+            plot.background=element_rect(fill="#f7f7f7"),
+            panel.background=element_rect(fill="#f7f7f7"),
+            panel.grid.minor=element_blank(),
+            panel.grid.major.y=element_blank(),
+            panel.grid.major.x=element_line(),
+            axis.ticks=element_blank(),
+            legend.position="top",
+            panel.border=element_blank())
   })
   
 }
