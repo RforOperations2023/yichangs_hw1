@@ -88,7 +88,7 @@ server <- function(input, output) {
   population_country <- reactive({
     new_table <- as.data.frame(t(dplyr::filter(df, country %in% c(input$c))[,-1]))
     colnames(new_table)[1] ="count"
-    new_table$count_type <- ifelse(new_table$count < 10000000, "below", "above") 
+    new_table$count_type <- ifelse(new_table$count < 80000000, "below", "above") 
     new_table$year <- row.names(new_table)
     new_table
   })
