@@ -47,7 +47,11 @@ ui <- fluidPage(
                mainPanel(
                  plotOutput(outputId = "barchart")
                )
-             )
+             ),
+             br(),
+             br(),
+             br(),
+             dataTableOutput(outputId = "dtTable")
     ),
     
     tabPanel("Population for each country", 
@@ -161,6 +165,10 @@ server <- function(input, output) {
             legend.position="top",
             panel.border=element_blank())
   })
+  
+  output$dtTable = DT::renderDataTable({
+    DT::datatable(df, class = 'cell-border stripe')
+  }) 
   
 }
 
