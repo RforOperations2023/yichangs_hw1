@@ -14,7 +14,6 @@ theme_set(theme_classic())
 
 df <- read.csv("world_population.csv")
 
-
 # Define UI for application that plots features of movies -----------
 ui <- fluidPage(
   navbarPage(
@@ -40,7 +39,6 @@ ui <- fluidPage(
                              choices = c("darkred", "darkgreen", "darkblue"),
                              selected = "darkblue")
                  
-                 
                ),
                
                # Output: Show barplot --------------------------------------
@@ -60,7 +58,6 @@ ui <- fluidPage(
              br(),
              br()
     ),
-    
     tabPanel("Population for each country", 
              # Sidebar layout with a input and output definitions --------------
              sidebarLayout(
@@ -185,7 +182,6 @@ server <- function(input, output) {
       write.csv(df, file)
     }
   )
-  
 }
 
 # Run the application -----------------------------------------------
